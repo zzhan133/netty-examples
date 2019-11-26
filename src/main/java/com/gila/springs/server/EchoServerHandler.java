@@ -3,6 +3,8 @@ package com.gila.springs.server;
 import java.nio.charset.Charset;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.CharsetUtil;
@@ -21,13 +23,12 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter{
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-        // TODO Auto-generated method stub
-        super.channelReadComplete(ctx);
+        ctx.writeAndFlush(Unpooled.EMPTY_BUFFER).addListener(ChannelFutureListener.CLOSE);
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        // TODO Auto-generated method stub
-        super.exceptionCaught(ctx, cause);
+        cause.printStackTrace();
+        ctx.close();
     }
 }
